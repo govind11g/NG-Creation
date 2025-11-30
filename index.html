@@ -17,7 +17,9 @@
             --text: #333333;
             --text-light: #6c757d;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --gradient: linear-gradient(135deg, var(--secondary), var(--accent));
         }
 
         * {
@@ -28,6 +30,7 @@
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
@@ -36,6 +39,8 @@
             color: var(--text);
             background-color: #ffffff;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -43,15 +48,20 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--primary);
+            line-height: 1.3;
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: clamp(2.5rem, 5vw, 4rem);
             line-height: 1.2;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         h2 {
-            font-size: 2.8rem;
+            font-size: clamp(2rem, 4vw, 2.8rem);
             text-align: center;
             margin-bottom: 3rem;
             position: relative;
@@ -64,33 +74,39 @@
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
-            height: 3px;
-            background: linear-gradient(to right, var(--secondary), var(--accent));
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
         }
 
         p {
             margin-bottom: 1.5rem;
             color: var(--text-light);
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .container {
             width: 90%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 20px;
         }
 
         section {
-            padding: 100px 0;
+            padding: clamp(60px, 10vw, 100px) 0;
+            position: relative;
         }
 
         .btn {
-            display: inline-block;
-            padding: 14px 32px;
-            background: linear-gradient(to right, var(--secondary), var(--accent));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: var(--gradient);
             color: white;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 50px;
             font-weight: 600;
             transition: var(--transition);
             border: none;
@@ -99,11 +115,28 @@
             letter-spacing: 1px;
             font-size: 0.9rem;
             box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-outline {
@@ -119,8 +152,9 @@
 
         /* Header */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.1);
             position: fixed;
             width: 100%;
             top: 0;
@@ -132,27 +166,35 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
+            padding: 15px 0;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
             font-weight: 700;
             color: var(--primary);
             font-family: 'Playfair Display', serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .logo span {
             color: var(--secondary);
         }
 
+        .logo::before {
+            content: '🏛';
+            font-size: 1.2em;
+        }
+
         nav ul {
             display: flex;
             list-style: none;
+            gap: 30px;
         }
 
         nav ul li {
-            margin-left: 30px;
             position: relative;
         }
 
@@ -161,7 +203,8 @@
             color: var(--primary);
             font-weight: 500;
             transition: var(--transition);
-            padding: 5px 0;
+            padding: 8px 0;
+            font-size: 0.95rem;
         }
 
         nav ul li a::after {
@@ -171,7 +214,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background-color: var(--secondary);
+            background: var(--gradient);
             transition: var(--transition);
         }
 
@@ -192,30 +235,46 @@
             color: var(--primary);
             background: none;
             border: none;
+            transition: var(--transition);
+        }
+
+        .mobile-menu:hover {
+            color: var(--secondary);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 43, 60, 0.85), rgba(26, 43, 60, 0.9)), url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(135deg, rgba(26, 43, 60, 0.9), rgba(26, 43, 60, 0.95)), url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             color: white;
             text-align: center;
-            padding: 200px 0 120px;
+            padding: clamp(120px, 15vw, 200px) 0 clamp(80px, 10vw, 120px);
             position: relative;
             overflow: hidden;
         }
 
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(26, 43, 60, 0.4) 100%);
+        }
+
         .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 25px;
             color: white;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            -webkit-text-fill-color: white;
+            background: none;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             max-width: 700px;
             margin: 0 auto 40px;
             color: rgba(255, 255, 255, 0.9);
@@ -226,11 +285,23 @@
             justify-content: center;
             gap: 20px;
             margin-top: 30px;
+            flex-wrap: wrap;
         }
 
         /* Services Section */
         .services {
-            background-color: var(--light);
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            position: relative;
+        }
+
+        .services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient);
         }
 
         .section-intro {
@@ -246,17 +317,18 @@
         }
 
         .service-card {
-            background-color: white;
-            border-radius: 8px;
+            background: white;
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
             position: relative;
+            border: 1px solid rgba(193, 154, 107, 0.1);
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-lg);
         }
 
         .service-card::before {
@@ -266,11 +338,12 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, var(--secondary), var(--accent));
+            background: var(--gradient);
+            z-index: 1;
         }
 
         .service-image {
-            height: 200px;
+            height: 220px;
             width: 100%;
             overflow: hidden;
             position: relative;
@@ -280,7 +353,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.8s ease;
         }
 
         .service-card:hover .service-image img {
@@ -289,11 +362,21 @@
 
         .service-content {
             padding: 30px;
+            position: relative;
         }
 
         .service-content h3 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-content h3::before {
+            content: '✦';
+            color: var(--secondary);
+            font-size: 1.2em;
         }
 
         /* Portfolio Section */
@@ -306,10 +389,10 @@
         }
 
         .filter-btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 30px;
+            border: 2px solid #e8ecef;
+            border-radius: 50px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
@@ -318,9 +401,10 @@
 
         .filter-btn.active,
         .filter-btn:hover {
-            background: var(--secondary);
+            background: var(--gradient);
             color: white;
-            border-color: var(--secondary);
+            border-color: transparent;
+            transform: translateY(-2px);
         }
 
         .portfolio-grid {
@@ -331,17 +415,23 @@
 
         .portfolio-item {
             position: relative;
-            border-radius: 8px;
+            border-radius: 16px;
             overflow: hidden;
-            height: 280px;
+            height: 300px;
             box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
         .portfolio-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.8s ease;
         }
 
         .portfolio-item:hover img {
@@ -354,14 +444,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, rgba(26, 43, 60, 0.8), rgba(26, 43, 60, 0.9));
+            background: linear-gradient(135deg, rgba(26, 43, 60, 0.9), rgba(139, 69, 19, 0.8));
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
             transition: var(--transition);
-            padding: 20px;
+            padding: 30px;
             text-align: center;
         }
 
@@ -371,13 +461,13 @@
 
         .portfolio-overlay h3 {
             color: white;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             transform: translateY(20px);
             transition: var(--transition);
         }
 
         .portfolio-overlay p {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             transform: translateY(20px);
             transition: var(--transition);
             transition-delay: 0.1s;
@@ -397,9 +487,9 @@
         }
 
         .about-image {
-            border-radius: 8px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
             position: relative;
         }
 
@@ -410,9 +500,10 @@
             left: 20px;
             right: -20px;
             bottom: -20px;
-            border: 2px solid var(--secondary);
-            border-radius: 8px;
+            border: 3px solid var(--secondary);
+            border-radius: 20px;
             z-index: -1;
+            opacity: 0.3;
         }
 
         .about-image img {
@@ -435,9 +526,17 @@
 
         .stat-item {
             text-align: center;
-            padding: 20px;
-            background: var(--light);
-            border-radius: 8px;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
         .stat-number {
@@ -445,25 +544,39 @@
             font-weight: 700;
             color: var(--secondary);
             margin-bottom: 5px;
+            display: block;
         }
 
         .stat-text {
             font-size: 0.9rem;
             color: var(--text-light);
+            font-weight: 500;
         }
 
         /* Testimonials */
         .testimonials {
-            background: linear-gradient(rgba(26, 43, 60, 0.9), rgba(26, 43, 60, 0.9)), url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(135deg, rgba(26, 43, 60, 0.95), rgba(26, 43, 60, 0.9)), url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             color: white;
             text-align: center;
+            position: relative;
+        }
+
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(26, 43, 60, 0.6) 100%);
         }
 
         .testimonials h2 {
             color: white;
+            position: relative;
         }
 
         .testimonials h2::after {
@@ -477,20 +590,33 @@
         }
 
         .testimonial {
-            background-color: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 20px;
             box-shadow: var(--shadow);
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--secondary);
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            opacity: 0.3;
+            font-family: serif;
         }
 
         .testimonial p {
             font-style: italic;
             font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 25px;
+            position: relative;
         }
 
         .client-info {
@@ -505,8 +631,9 @@
             height: 70px;
             border-radius: 50%;
             overflow: hidden;
-            margin-right: 15px;
+            margin-right: 20px;
             border: 3px solid var(--secondary);
+            box-shadow: var(--shadow);
         }
 
         .client-image img {
@@ -518,19 +645,22 @@
         .client-details h4 {
             color: white;
             margin-bottom: 5px;
+            text-align: left;
         }
 
         .client-details p {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: 0;
             font-size: 0.9rem;
+            text-align: left;
         }
 
-        /* Contact Section */
+        /* Enhanced Contact Section */
         .contact-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
+            align-items: start;
         }
 
         .contact-info {
@@ -541,43 +671,118 @@
         .contact-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: var(--light);
-            border-radius: 8px;
+            margin-bottom: 25px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            transition: var(--transition);
+            border: 1px solid rgba(193, 154, 107, 0.1);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient);
             transition: var(--transition);
         }
 
         .contact-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(193, 154, 107, 0.3);
+        }
+
+        .contact-item:hover::before {
+            width: 6px;
         }
 
         .contact-icon {
-            background: linear-gradient(to right, var(--secondary), var(--accent));
+            background: var(--gradient);
             color: white;
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 20px;
             flex-shrink: 0;
+            font-size: 1.3rem;
+            box-shadow: 0 8px 20px rgba(193, 154, 107, 0.3);
+            transition: var(--transition);
+        }
+
+        .contact-item:hover .contact-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 25px rgba(193, 154, 107, 0.4);
+        }
+
+        .contact-details h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
             font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .contact-details p {
+            color: var(--text-light);
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Contact Form */
+        .contact-form {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(193, 154, 107, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 0;
         }
 
         .contact-form input,
         .contact-form textarea,
         .contact-form select {
             width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            padding: 18px 20px;
+            margin-bottom: 0;
+            border: 2px solid #e8ecef;
+            border-radius: 12px;
             font-size: 1rem;
             transition: var(--transition);
             font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
         }
 
         .contact-form input:focus,
@@ -585,70 +790,121 @@
         .contact-form select:focus {
             outline: none;
             border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(193, 154, 107, 0.2);
+            box-shadow: 0 0 0 4px rgba(193, 154, 107, 0.15);
+            background: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: #a0a4a8;
+            transition: var(--transition);
+        }
+
+        .contact-form input:focus::placeholder,
+        .contact-form textarea:focus::placeholder {
+            color: #c7c9cc;
         }
 
         .contact-form textarea {
-            height: 150px;
+            height: 140px;
             resize: vertical;
+            line-height: 1.6;
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .contact-form select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a2b3c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 16px;
+            padding-right: 50px;
         }
 
-        /* Form Status Messages */
+        .contact-form .btn {
+            width: 100%;
+            padding: 18px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            background: var(--gradient);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .contact-form .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(193, 154, 107, 0.4);
+        }
+
+        /* Enhanced Form Status Messages */
         .form-status {
-            padding: 15px;
+            padding: 20px;
             margin: 20px 0;
-            border-radius: 4px;
+            border-radius: 12px;
             text-align: center;
             display: none;
+            font-weight: 500;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
         }
 
         .form-status.success {
-            background-color: #d4edda;
+            background: linear-gradient(135deg, #d4ffd4 0%, #a8e6a8 100%);
             color: #155724;
-            border: 1px solid #c3e6cb;
+            border-color: #28a745;
             display: block;
         }
 
         .form-status.error {
-            background-color: #f8d7da;
+            background: linear-gradient(135deg, #ffd4d4 0%, #e6a8a8 100%);
             color: #721c24;
-            border: 1px solid #f5c6cb;
+            border-color: #dc3545;
             display: block;
         }
 
-        /* Loading Spinner */
+        /* Enhanced Loading Spinner */
         .loading {
             display: none;
             text-align: center;
-            margin: 20px 0;
+            margin: 30px 0;
+            padding: 20px;
         }
 
         .spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid var(--secondary);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 2s linear infinite;
-            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+            animation: spin 1.5s linear infinite;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .loading p {
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 0;
         }
 
         /* Footer */
         footer {
-            background-color: var(--dark);
+            background: linear-gradient(135deg, var(--dark), #0a1520);
             color: white;
             padding: 80px 0 20px;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient);
         }
 
         .footer-content {
@@ -688,6 +944,9 @@
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .footer-column ul li a:hover {
@@ -698,25 +957,27 @@
         .social-links {
             display: flex;
             margin-top: 20px;
+            gap: 10px;
         }
 
         .social-links a {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            margin-right: 10px;
             color: white;
             text-decoration: none;
             transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .social-links a:hover {
-            background-color: var(--secondary);
+            background: var(--secondary);
             transform: translateY(-3px);
+            border-color: var(--secondary);
         }
 
         .copyright {
@@ -732,9 +993,9 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--secondary);
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -744,7 +1005,9 @@
             opacity: 0;
             transition: var(--transition);
             z-index: 999;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
+            border: none;
+            cursor: pointer;
         }
 
         .back-to-top.visible {
@@ -752,38 +1015,39 @@
         }
 
         .back-to-top:hover {
-            background: var(--accent);
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
         }
 
         /* Enhanced Responsive Styles */
         @media (max-width: 1200px) {
             .container {
                 width: 95%;
-            }
-            
-            h1 {
-                font-size: 3.2rem;
-            }
-            
-            h2 {
-                font-size: 2.5rem;
+                padding: 0 15px;
             }
         }
 
         @media (max-width: 992px) {
-            h1 {
-                font-size: 2.8rem;
-            }
-            
-            h2 {
-                font-size: 2.2rem;
-            }
-            
-            section {
-                padding: 80px 0;
-            }
-            
             .about-content,
             .contact-container {
                 grid-template-columns: 1fr;
@@ -799,68 +1063,39 @@
             }
             
             .hero {
-                padding: 180px 0 100px;
+                background-attachment: scroll;
             }
             
-            .hero h1 {
-                font-size: 3rem;
+            .contact-form {
+                padding: 30px;
             }
             
-            .hero p {
+            .contact-item {
+                padding: 20px;
+            }
+            
+            .contact-icon {
+                width: 55px;
+                height: 55px;
                 font-size: 1.2rem;
             }
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.3rem;
-            }
-            
-            h2 {
-                font-size: 1.9rem;
-            }
-            
-            section {
-                padding: 70px 0;
-            }
-            
-            .hero {
-                padding: 160px 0 80px;
-                background-attachment: scroll;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .hero-btns {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .hero-btns .btn {
-                width: 100%;
-                max-width: 280px;
-                margin-bottom: 0;
-            }
-            
             /* Mobile Navigation */
             nav ul {
                 display: none;
                 position: fixed;
-                top: 80px;
+                top: 70px;
                 left: 0;
                 width: 100%;
-                background-color: white;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
                 flex-direction: column;
                 padding: 20px 0;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
                 z-index: 999;
+                gap: 0;
             }
             
             nav ul.active {
@@ -877,7 +1112,7 @@
                 display: block;
                 padding: 15px 0;
                 font-size: 1.1rem;
-                border-bottom: 1px solid #f0f0f0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             }
             
             nav ul li:last-child a {
@@ -895,7 +1130,7 @@
             }
             
             .stat-item {
-                padding: 15px;
+                padding: 20px;
             }
             
             .stat-number {
@@ -903,8 +1138,7 @@
             }
             
             .portfolio-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 20px;
+                grid-template-columns: 1fr;
             }
             
             .portfolio-item {
@@ -919,40 +1153,52 @@
             .footer-content {
                 gap: 30px;
             }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-btns .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .contact-form {
+                padding: 25px;
+                border-radius: 16px;
+            }
+            
+            .form-row {
+                gap: 15px;
+            }
+            
+            .contact-form input,
+            .contact-form textarea,
+            .contact-form select {
+                padding: 16px;
+            }
+            
+            .contact-item {
+                padding: 18px;
+                margin-bottom: 20px;
+            }
+            
+            .contact-icon {
+                width: 50px;
+                height: 50px;
+                margin-right: 15px;
+            }
         }
 
         @media (max-width: 576px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            h2 {
-                font-size: 1.7rem;
-            }
-            
-            section {
-                padding: 60px 0;
-            }
-            
-            .hero {
-                padding: 140px 0 70px;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
             .container {
                 width: 92%;
                 padding: 0 10px;
             }
             
             .btn {
-                padding: 12px 25px;
+                padding: 14px 25px;
                 font-size: 0.85rem;
             }
             
@@ -962,16 +1208,12 @@
                 padding: 20px;
             }
             
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .portfolio-item {
                 height: 220px;
             }
             
             .filter-btn {
-                padding: 8px 16px;
+                padding: 10px 20px;
                 font-size: 0.85rem;
             }
             
@@ -989,7 +1231,7 @@
             .contact-form input,
             .contact-form textarea,
             .contact-form select {
-                padding: 12px;
+                padding: 14px;
                 font-size: 0.95rem;
             }
             
@@ -1003,34 +1245,40 @@
             }
             
             .social-links a {
-                width: 35px;
-                height: 35px;
-                margin: 0 5px;
+                width: 40px;
+                height: 40px;
             }
             
             .back-to-top {
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
                 bottom: 20px;
                 right: 20px;
+            }
+            
+            .testimonial {
+                padding: 30px 20px;
+            }
+            
+            .client-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .client-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .client-details h4,
+            .client-details p {
+                text-align: center;
             }
         }
 
         @media (max-width: 400px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            h2 {
-                font-size: 1.5rem;
-            }
-            
-            .hero {
-                padding: 120px 0 60px;
-            }
-            
             .logo {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
             
             .service-image {
@@ -1046,11 +1294,37 @@
             }
             
             .stat-item {
-                padding: 12px;
+                padding: 15px;
             }
             
             .stat-number {
                 font-size: 1.8rem;
+            }
+            
+            .contact-form {
+                padding: 20px;
+            }
+            
+            .contact-form input,
+            .contact-form textarea,
+            .contact-form select {
+                padding: 12px;
+                border-radius: 10px;
+            }
+            
+            .contact-item {
+                padding: 15px;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .contact-details h4 {
+                font-size: 1.1rem;
             }
         }
 
@@ -1075,6 +1349,10 @@
             .contact-item:hover {
                 transform: none;
             }
+            
+            .btn:hover {
+                transform: none;
+            }
         }
     </style>
 </head>
@@ -1084,9 +1362,9 @@
         <div class="container header-container">
             <div class="logo">NG <span>Creation</span></div>
             <nav>
-                <div class="mobile-menu">
+                <button class="mobile-menu">
                     <i class="fas fa-bars"></i>
-                </div>
+                </button>
                 <ul>
                     <li><a href="#home" class="active">Home</a></li>
                     <li><a href="#services">Services</a></li>
@@ -1101,12 +1379,18 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="container">
+        <div class="container fade-in-up">
             <h1>Architectural Excellence with Vastu Harmony</h1>
             <p>NG Creation transforms your vision into reality with Vastu-compliant designs that balance aesthetics, functionality, and positive energy flow for harmonious living spaces.</p>
             <div class="hero-btns">
-                <a href="#portfolio" class="btn">View Our Work</a>
-                <a href="#contact" class="btn btn-outline">Consult Our Experts</a>
+                <a href="#portfolio" class="btn">
+                    <i class="fas fa-eye"></i>
+                    View Our Work
+                </a>
+                <a href="#contact" class="btn btn-outline">
+                    <i class="fas fa-calendar-check"></i>
+                    Consult Our Experts
+                </a>
             </div>
         </div>
     </section>
@@ -1119,16 +1403,17 @@
                 <p>We offer comprehensive architectural and design services that combine modern aesthetics with traditional Vastu principles to create spaces that nurture well-being and prosperity.</p>
             </div>
             <div class="services-grid">
-                <div class="service-card">
+                <!-- Service cards remain the same -->
+                <div class="service-card fade-in-up">
                     <div class="service-image">
-                        <img src="floor2.jpg" alt="Vastu Floor Plan">
+                        <img src="vastu.jpg" alt="Vastu Floor Plan">
                     </div>
                     <div class="service-content">
                         <h3>Vastu-Compliant Floor Plans</h3>
                         <p>Expertly designed ground floor plans that adhere to Vastu principles for positive energy flow and harmony in every corner of your home.</p>
                     </div>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-image">
                         <img src="furniture2.jpg" alt="Furniture Layout">
                     </div>
@@ -1137,7 +1422,7 @@
                         <p>Strategic furniture placement that maximizes space utilization while maintaining aesthetic appeal and Vastu compliance.</p>
                     </div>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-image">
                         <img src="structural.jpg" alt="Structural Drawings">
                     </div>
@@ -1146,7 +1431,7 @@
                         <p>Detailed structural drawings ensuring safety, stability, and compliance with building codes and regulations.</p>
                     </div>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Electrical Layout">
                     </div>
@@ -1155,7 +1440,7 @@
                         <p>Comprehensive electrical plans with optimal placement of outlets, switches, and lighting fixtures for functionality and safety.</p>
                     </div>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Plumbing & Drainage">
                     </div>
@@ -1164,16 +1449,16 @@
                         <p>Efficient plumbing and drainage systems designed for functionality, easy maintenance, and Vastu compliance.</p>
                     </div>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Elevation Design">
+                        <img src="elevation.jpg" alt="Elevation Design">
                     </div>
                     <div class="service-content">
                         <h3>Elevation Design</h3>
                         <p>Stunning front and side elevation designs that enhance curb appeal and architectural beauty while following Vastu guidelines.</p>
                     </div>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Walkthrough Videos">
                     </div>
@@ -1182,7 +1467,7 @@
                         <p>Immersive 3D walkthrough videos that bring your design to life before construction begins, allowing for perfect visualization.</p>
                     </div>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Interior Design">
                     </div>
@@ -1211,43 +1496,43 @@
             </div>
             
             <div class="portfolio-grid">
-                <div class="portfolio-item" data-category="vastu">
-                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Vastu Floor Plan">
+                <div class="portfolio-item fade-in-up" data-category="vastu">
+                    <img src="vastu1.jpg" alt="Vastu Floor Plan">
                     <div class="portfolio-overlay">
                         <h3>Vastu-Compliant Floor Plan</h3>
                         <p>Residential project with optimal energy flow and spatial harmony</p>
                     </div>
                 </div>
-                <div class="portfolio-item" data-category="elevation">
-                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Modern Elevation">
+                <div class="portfolio-item fade-in-up" data-category="elevation">
+                    <img src="elevation2.jpg" alt="Modern Elevation">
                     <div class="portfolio-overlay">
                         <h3>Modern Elevation Design</h3>
                         <p>Contemporary facade with Vastu-compliant orientation</p>
                     </div>
                 </div>
-                <div class="portfolio-item" data-category="interior">
-                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Interior Design">
+                <div class="portfolio-item fade-in-up" data-category="interior">
+                    <img src="ANANTA GADGE 3d.jpg" alt="Interior Design">
                     <div class="portfolio-overlay">
                         <h3>Harmonious Interior Design</h3>
                         <p>Living space designed with Vastu principles and modern aesthetics</p>
                     </div>
                 </div>
-                <div class="portfolio-item" data-category="vastu">
-                    <img src="https://images.unsplash.com/photo-1600566753151-384129cf4e3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Structural Drawing">
+                <div class="portfolio-item fade-in-up" data-category="vastu">
+                    <img src="vastu.jpg" alt="Structural Drawing">
                     <div class="portfolio-overlay">
                         <h3>Structural Drawing</h3>
                         <p>Detailed architectural blueprint with Vastu considerations</p>
                     </div>
                 </div>
-                <div class="portfolio-item" data-category="elevation">
-                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Front Elevation">
+                <div class="portfolio-item fade-in-up" data-category="elevation">
+                    <img src="ground floor 3d.jpg" alt="Front Elevation">
                     <div class="portfolio-overlay">
                         <h3>Front Elevation Design</h3>
                         <p>Elegant facade with optimal main entrance placement</p>
                     </div>
                 </div>
-                <div class="portfolio-item" data-category="interior">
-                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Kitchen Design">
+                <div class="portfolio-item fade-in-up" data-category="interior">
+                    <img src="FRONT VIEW.jpg" alt="Kitchen Design">
                     <div class="portfolio-overlay">
                         <h3>Vastu Kitchen Design</h3>
                         <p>Functional kitchen layout with proper element placement</p>
@@ -1262,29 +1547,32 @@
         <div class="container">
             <h2>About NG Creation</h2>
             <div class="about-content">
-                <div class="about-text">
+                <div class="about-text fade-in-up">
                     <h3>Creating Harmonious Living Spaces Since 2010</h3>
                     <p>NG Creation is a premier architectural design firm specializing in Vastu-compliant residential planning. With over a decade of experience, we've transformed hundreds of homes into harmonious living spaces that balance aesthetics, functionality, and positive energy flow.</p>
                     <p>Our team of certified architects, Vastu consultants, and interior designers work collaboratively to deliver comprehensive solutions that exceed client expectations. We believe that a well-designed home not only provides comfort but also enhances the quality of life for its inhabitants through thoughtful spatial planning and Vastu principles.</p>
                     <p>Every project we undertake is approached with meticulous attention to detail, ensuring that both structural integrity and Vastu compliance are maintained throughout the design and construction process.</p>
-                    <a href="#contact" class="btn">Schedule a Consultation</a>
+                    <a href="#contact" class="btn">
+                        <i class="fas fa-calendar-alt"></i>
+                        Schedule a Consultation
+                    </a>
                     
                     <div class="about-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">250+</div>
+                        <div class="stat-item fade-in-up">
+                            <span class="stat-number">250+</span>
                             <div class="stat-text">Projects Completed</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">5+</div>
+                        <div class="stat-item fade-in-up">
+                            <span class="stat-number">5+</span>
                             <div class="stat-text">Years Experience</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">98%</div>
+                        <div class="stat-item fade-in-up">
+                            <span class="stat-number">98%</span>
                             <div class="stat-text">Client Satisfaction</div>
                         </div>
                     </div>
                 </div>
-                <div class="about-image">
+                <div class="about-image fade-in-up">
                     <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="About NG Creation">
                 </div>
             </div>
@@ -1296,7 +1584,7 @@
         <div class="container">
             <h2>Client Testimonials</h2>
             <div class="testimonial-slider">
-                <div class="testimonial">
+                <div class="testimonial fade-in-up">
                     <p>"NG Creation transformed our home with their Vastu-compliant design. The energy flow in our house has noticeably improved, and the furniture layout maximizes every inch of space. The team was professional, responsive, and delivered beyond our expectations. Highly recommended!"</p>
                     <div class="client-info">
                         <div class="client-image">
@@ -1324,41 +1612,41 @@
                 <div class="contact-info">
                     <h3>Get In Touch</h3>
                     
-                    <div class="contact-item">
+                    <div class="contact-item fade-in-up">
                         <div class="contact-icon">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
-                        <div>
+                        <div class="contact-details">
                             <h4>Our Office</h4>
                             <p>ADHYAPAK LAYOUT, HINGNA ROAD, NAGPUR</p>
                         </div>
                     </div>
                     
-                    <div class="contact-item">
+                    <div class="contact-item fade-in-up">
                         <div class="contact-icon">
                             <i class="fas fa-phone"></i>
                         </div>
-                        <div>
+                        <div class="contact-details">
                             <h4>Phone</h4>
                             <p>+91 97642 51403</p>
                         </div>
                     </div>
                     
-                    <div class="contact-item">
+                    <div class="contact-item fade-in-up">
                         <div class="contact-icon">
                             <i class="fas fa-envelope"></i>
                         </div>
-                        <div>
+                        <div class="contact-details">
                             <h4>Email</h4>
                             <p>ngcreationdesign07@gmail.com</p>
                         </div>
                     </div>
                     
-                    <div class="contact-item">
+                    <div class="contact-item fade-in-up">
                         <div class="contact-icon">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <div>
+                        <div class="contact-details">
                             <h4>Business Hours</h4>
                             <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
                             <p>Saturday: 10:00 AM - 4:00 PM</p>
@@ -1366,7 +1654,7 @@
                     </div>
                 </div>
                 
-                <div class="contact-form">
+                <div class="contact-form fade-in-up">
                     <form id="contactForm">
                         <div id="formStatus" class="form-status"></div>
                         <div id="loading" class="loading">
@@ -1377,7 +1665,10 @@
                             <input type="text" id="name" name="name" placeholder="Your Name" required>
                             <input type="email" id="email" name="email" placeholder="Your Email" required>
                         </div>
-                        <input type="text" id="subject" name="subject" placeholder="Subject">
+                        <div class="form-row">
+                            <input type="tel" id="phone" name="phone" placeholder="Your Mobile Number" required pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number">
+                            <input type="text" id="subject" name="subject" placeholder="Subject">
+                        </div>
                         <select id="service" name="service">
                             <option value="" disabled selected>Select Service</option>
                             <option value="vastu">Vastu Floor Plans</option>
@@ -1390,7 +1681,10 @@
                             <option value="interior">Interior Design</option>
                         </select>
                         <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-                        <button type="submit" class="btn">Send Message</button>
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
                     </form>
                 </div>
             </div>
@@ -1401,43 +1695,53 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
+                <div class="footer-column fade-in-up">
                     <h3>NG Creation</h3>
                     <p>Transforming spaces with Vastu-compliant designs that harmonize aesthetics, functionality, and positive energy flow for enhanced living experiences.</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/share/1ABNWzBzos/"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/civilengineergovind?igsh=MzdlbWJza3JwNW44"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.linkedin.com/in/govind-gawande-49814a2a9?utm_source=share_via&utm_content=profile&utm_medium=member_android"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="https://www.facebook.com/share/1ABNWzBzos/" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/civilengineergovind?igsh=MzdlbWJza3JwNW44" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/govind-gawande-49814a2a9?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" aria-label="Pinterest">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
                     </div>
                 </div>
                 
-                <div class="footer-column">
+                <div class="footer-column fade-in-up">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
+                        <li><a href="#portfolio"><i class="fas fa-chevron-right"></i> Portfolio</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-column">
+                <div class="footer-column fade-in-up">
                     <h3>Services</h3>
                     <ul>
-                        <li><a href="#">Vastu Floor Plans</a></li>
-                        <li><a href="#">Furniture Layout</a></li>
-                        <li><a href="#">Structural Drawings</a></li>
-                        <li><a href="#">Electrical Layout</a></li>
-                        <li><a href="#">Plumbing & Drainage</a></li>
-                        <li><a href="#">Elevation Design</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Vastu Floor Plans</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Furniture Layout</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Structural Drawings</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Electrical Layout</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Plumbing & Drainage</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Elevation Design</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-column">
+                <div class="footer-column fade-in-up">
                     <h3>Contact Info</h3>
                     <ul>
                         <li><i class="fas fa-map-marker-alt"></i> ADHYAPAK LAYOUT, HINGNA ROAD, NAGPUR</li>
@@ -1455,9 +1759,9 @@
     </footer>
 
     <!-- Back to Top Button -->
-    <a href="#" class="back-to-top">
+    <button class="back-to-top" aria-label="Back to Top">
         <i class="fas fa-chevron-up"></i>
-    </a>
+    </button>
 
     <script>
         // Initialize EmailJS with your Public Key
@@ -1468,12 +1772,16 @@
         // Mobile Menu Toggle
         document.querySelector('.mobile-menu').addEventListener('click', function() {
             document.querySelector('nav ul').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
         });
 
         // Close mobile menu when clicking on a link
         document.querySelectorAll('nav ul li a').forEach(link => {
             link.addEventListener('click', function() {
                 document.querySelector('nav ul').classList.remove('active');
+                document.querySelector('.mobile-menu i').classList.add('fa-bars');
+                document.querySelector('.mobile-menu i').classList.remove('fa-times');
             });
         });
 
@@ -1502,11 +1810,11 @@
             
             if(window.scrollY > 100) {
                 header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
-                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                header.style.boxShadow = '0 5px 30px rgba(0, 0, 0, 0.15)';
                 backToTop.classList.add('visible');
             } else {
-                header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.08)';
+                header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 30px rgba(0, 0, 0, 0.1)';
                 backToTop.classList.remove('visible');
             }
         });
@@ -1527,15 +1835,23 @@
                 portfolioItems.forEach(item => {
                     if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
                         item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 50);
                     } else {
-                        item.style.display = 'none';
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
                     }
                 });
             });
         });
 
-        // Contact Form Submission with EmailJS - UPDATED
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        // Contact Form Submission with Enhanced Error Handling
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const form = this;
@@ -1543,46 +1859,115 @@
             const loading = document.getElementById('loading');
             const submitBtn = form.querySelector('button[type="submit"]');
             
+            // Validation
+            if (!validateForm()) {
+                return;
+            }
+            
             // Show loading state
             submitBtn.disabled = true;
             loading.style.display = 'block';
             formStatus.style.display = 'none';
             
-            // Get form data with proper field names
-            const formData = {
-                from_name: document.getElementById('name').value,
-                from_email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value || 'No Subject',
-                service_type: document.getElementById('service').value || 'Not Specified',
-                message: document.getElementById('message').value,
-                to_email: 'ngcreationdesign07@gmail.com',
-                reply_to: document.getElementById('email').value
-            };
-            
-            console.log('Sending form data:', formData); // For debugging
-            
-            // Send email using EmailJS with correct service and template IDs
-            emailjs.send('service_jzpsmij', 'template_bsmpde7', formData)
-                .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    // Success
-                    formStatus.textContent = 'Thank you! Your message has been sent successfully. We will get back to you soon.';
-                    formStatus.className = 'form-status success';
-                    formStatus.style.display = 'block';
-                    form.reset();
-                }, function(error) {
-                    console.error('FAILED...', error);
-                    // Error
-                    formStatus.textContent = 'Sorry, there was an error sending your message. Please try again or contact us directly at ngcreationdesign07@gmail.com. Error: ' + error.text;
-                    formStatus.className = 'form-status error';
-                    formStatus.style.display = 'block';
-                })
-                .finally(function() {
-                    // Hide loading state
-                    loading.style.display = 'none';
-                    submitBtn.disabled = false;
-                });
+            try {
+                // Get form data - UPDATED VERSION WITH PHONE
+                const formData = {
+                    from_name: document.getElementById('name').value.trim(),
+                    from_email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    subject: document.getElementById('subject').value.trim() || 'No Subject Provided',
+                    service_type: document.getElementById('service').value || 'Not Specified',
+                    message: document.getElementById('message').value.trim(),
+                    timestamp: new Date().toLocaleString('en-IN', { 
+                        timeZone: 'Asia/Kolkata',
+                        dateStyle: 'full', 
+                        timeStyle: 'medium' 
+                    })
+                };
+                
+                // Send email using EmailJS
+                const response = await emailjs.send(
+                    'service_jzpsmij', 
+                    'template_bsmpde7', 
+                    formData
+                );
+                
+                // Success
+                showFormStatus('success', 'Thank you! Your message has been sent successfully. We will get back to you within 24 hours.');
+                form.reset();
+                
+            } catch (error) {
+                console.error('Email sending failed:', error);
+                
+                // Fallback: Show alternative contact methods
+                const fallbackMsg = `Sorry, there was an error sending your message. 
+                    Please contact us directly at:<br>
+                    <strong>Phone:</strong> +91 97642 51403<br>
+                    <strong>Email:</strong> ngcreationdesign07@gmail.com`;
+                
+                showFormStatus('error', fallbackMsg);
+                
+            } finally {
+                // Hide loading state
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
         });
+
+        // Enhanced form validation
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const formStatus = document.getElementById('formStatus');
+            
+            if (!name) {
+                showFormStatus('error', 'Please enter your name.');
+                return false;
+            }
+            
+            if (!email || !isValidEmail(email)) {
+                showFormStatus('error', 'Please enter a valid email address.');
+                return false;
+            }
+            
+            if (!phone || !isValidPhone(phone)) {
+                showFormStatus('error', 'Please enter a valid 10-digit mobile number.');
+                return false;
+            }
+            
+            if (!message) {
+                showFormStatus('error', 'Please enter your message.');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^[6-9]\d{9}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function showFormStatus(type, message) {
+            const formStatus = document.getElementById('formStatus');
+            formStatus.innerHTML = message;
+            formStatus.className = `form-status ${type}`;
+            formStatus.style.display = 'block';
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    formStatus.style.display = 'none';
+                }, 5000);
+            }
+        }
 
         // Set active navigation link based on scroll position
         window.addEventListener('scroll', function() {
@@ -1606,5 +1991,34 @@
                 }
             });
         });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with fade-in-up class
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Back to top functionality
+        document.querySelector('.back-to-top').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
+</body>
 </html>
